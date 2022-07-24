@@ -11,6 +11,9 @@ import productList from '../components/ProductList.vue'
 
 <template>
   <main>
-    <productList />
+    <!-- <Suspense> -->
+
+      <productList />
+    <!-- </Suspense> -->
   </main>
 </template>
