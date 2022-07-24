@@ -1,31 +1,28 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="container">
-    <div class="card">
-      <h2 class="card__title">{{ dataCar.name }}</h2>
-      <img
-        class="card__img"
-        :src="dataCar.background_image"
-        :alt="dataCar.name"
-      />
-      <div class="card__data">
-        <p>id : {{ dataCar.id }}</p>
-        <p>slug : /{{ dataCar.slug }}</p>
-        <p>released : {{ dataCar.released }}</p>
-        <p>
-          Genres:
-          <!-- <span :key="index" v-for="(dataCar.genre, index) in genres"> {{ genre.name }}, </span> -->
-        </p>
-        <!-- <input v-on:input="handleChange" :value="valText" /> -->
-        <p :value="valText">{{ valText }}</p>
-        <!-- <button :key="id" v-on:click="handleClick">DEL</button> -->
-      </div>
+    <div class="container">
+        <router-link to="/">
+            <div class="card">
+                <h2 class="card__title">{{ dataCar.name }}</h2>
+                <img class="card__img" :src="dataCar.background_image" :alt="dataCar.name" />
+                <div class="card__data">
+                    <p>id : {{ dataCar.id }}</p>
+                    <p>slug : /{{ dataCar.slug }}</p>
+                    <p>released : {{ dataCar.released }}</p>
+                    <p>
+                        Genres:
+                        <!-- <span :key="index" v-for="(dataCar.genre, index) in genres"> {{ genre.name }}, </span> -->
+                    </p>
+                    <!-- <input v-on:input="handleChange" :value="valText" /> -->
+                    <p :value="valText">{{ valText }}</p>
+                    <!-- <button :key="id" v-on:click="handleClick">DEL</button> -->
+                </div>
+            </div>
+        </router-link>
+        <div class="card__video">
+            <video autoplay="" muted="true" controls="" loop="" :src="clip" sound=""></video>
+        </div>
     </div>
-
-    <div class="card__video">
-      <video autoplay="" controls="" loop="" :src="clip"></video>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -41,6 +38,8 @@ export default {
     const dataCar = ref([]);
     const idClick = ref(0);
     const clip = ref("");
+
+// const emit = defineEmits(['un-evenement']);
 
     console.log(clip);
     onMounted(() => {

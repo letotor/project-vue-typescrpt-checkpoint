@@ -5,18 +5,25 @@
   <div class="container">
     <div v-for="item in dataCar" :key="item.id">
       <br />
- 
-      <Game :id="item.id" :slug="item.slug" :released="item.released" :image="item.background_image"
-        :genres="item.genres" :name="item.name" @click="navigateToDetail" />
-   
-
+      <NavLink @click="navigate">
+        <Game
+          :id="item.id"
+          :slug="item.slug"
+          :released="item.released"
+          :image="item.background_image"
+          :genres="item.genres"
+          :name="item.name"
+          @click="navigateToDetail"
+          @send-id-card="gestionnaire"
+        />
+      </NavLink>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onUpdated, computed, } from "vue";
-import { RouterLink, RouterView ,} from "vue-router";
+import { ref, onMounted, onUpdated, computed } from "vue";
+
 // import {router} from 'vue-router'
 import axios from "axios";
 import Game from "./Game.vue";
@@ -24,8 +31,9 @@ import Game from "./Game.vue";
 export default {
   setup() {
     const URL = "https://apis.wilders.dev/wild-games/games/";
-    const dataCar = ref([]);
-    const dataCarFilter = ref([]);
+    const  dataCar = ref([]);
+    const  dataCarFilter = ref([]);
+    const idLink = ref(0);
 
     // const result = await axios.get(URL).data
     // characters = result;
@@ -39,51 +47,71 @@ export default {
       return (cssvar.value = cssvar);
     });
 
-    
-    const navigateToDetail = ()=>{
-      console.log('detal de la card redirection')
-      //  router.push("/card-detail")
-    }
-    const filterCharacter = (id)=>{
-    return dataCarFilter .value =  dataCar.value.filter(car=>car.id!==id)
 
-    }
+
+    const gestionnaire = (id) => {
+      idLink.value = id;
+      console.log("receive id", idLink);
+      filterCharacter(idLink);
+      console.log(dataCarFilter.value);
+    };
+
+    const navigate = () => {
+      console.log("detal de la card redirection");
+    };
+
+    const filterCharacter = (id) => {
+      console.log('datacar',dataCar.value);
+
+      const  dataIn = dataCarFilter.value ;
+      console.log('datain',dataIn)
+      dataCarFilter.value =dataCar.value.filter(elt =>{
+          
+          console.log('eltttttttttt',elt)
+
+        return elt.id !== id
+      } )
+    };
+
     const handleClick = (event) => {
       console.log(event.target);
-     
+      console.log("hadnelclik ------", idLink.value);
+      return idLink.value += 1;
     };
     const handleChange = (event) => {
-
       console.log(event.target);
     };
 
     onUpdated(() => {
+
+
     });
 
     onMounted(() => {
       console.log("onMounted");
-     return  getData();
+      return getData();
     });
     const getData = () => {
       console.log("getDAta fct");
       axios.get(URL).then((res) => {
-        dataCar.value = res.data;
+          dataCar.value = res.data;
+        console.log("getDAta", dataCar);
       });
     };
 
     return {
       dataCar,
       dataCarFilter,
+      idLink,
       getData,
       handleClick,
       handleChange,
-      navigateToDetail, 
+      navigate,
       filterCharacter,
-      RouterLink, RouterView
-      
+      gestionnaire,
     };
   },
-   components: { Game },
+  components: { Game },
 };
 </script>
 

@@ -7,18 +7,20 @@
       <p>id : {{ id }}</p>
       <p>slug : /{{ slug }}</p>
       <p>released : {{ released }}</p>
-      <p> Genres: 
-      <span :key="index" v-for="(genre,index) in genres"> {{ genre.name }}, </span>
+      <p> Genres:
+        <span :key="index" v-for="(genre,index) in genres"> {{ genre.name }}, </span>
       </p>
       <input v-on:input="handleChange" :value="valText" />
       <p :value="valText">{{ valText }}</p>
+      <!-- <button @click="emitCustomEvent">Cliquer</button> -->
       <button :key="id" v-on:click="handleClick">DEL</button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, onUpdated, computed } from "vue";
+
+import { ref, reactive, onUpdated, computed } from "vue";
 
 export default {
   props: {
@@ -29,15 +31,16 @@ export default {
     image: String,
     genres:Array
   },
-  setup(props) {
+  
+  setup(props,context) {
     
-     console.log(props.genres);
-   
+     console.log(props.genres,context);
     const valText = ref("VALtEXT");
     const dataCar = ref([]);
-    const idClick = ref(0);
+    let idClick = reactive(0);
 
 
+ 
     computed(() => {
       const cssvar = () => {
         return {
@@ -50,7 +53,8 @@ export default {
 
     const handleClick = (event) => {
       console.log(event.target,'id supp--->',props.id);
-      return (idClick.value = props.id);
+      idClick = props.id;
+      context.emit('sendIdCard', idClick);
     };
 
     const handleChange = (event) => {
