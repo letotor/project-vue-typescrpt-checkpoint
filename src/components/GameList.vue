@@ -3,45 +3,32 @@
   <h1>Bienvenu sur l'API WIlder sous VUE3 composition</h1>
   <!-- <pre >{{ JSON.stringify(dataCar,null,2)}}</pre> -->
   <div class="container">
-    <div :style="cssvar" class="card" v-for="item in dataCar" :key="item.id">
+    <div v-for="item in dataCar" :key="item.id">
       <br />
-      <h2 class="card__title">{{ item.name }}</h2>
-      <img class="card__img" :src="item.background_image" :alt="item.name" />
-      <div class="card__data">
-        <p>id : {{ item.id }}</p>
-        <p>slug : {{ item.slug }}</p>
-        <p>released : {{ item.released }}</p>
-        <button @click="handleClick($emit)">DEL</button>
-      </div>
+ 
+      <Game :id="item.id" :slug="item.slug" :released="item.released" :image="item.background_image"
+        :genres="item.genres" :name="item.name" @click="navigateToDetail" />
+   
 
-      <!-- {{ `${item.id} ${item.background_image} ${item.slug} ${item.released}` }} -->
     </div>
   </div>
 </template>
 
 <script>
-import {
-  ref,
-  reactive,
-  onMounted,
-  onUpdated,
-  computed,
-  //   onBeforeMount,
-  //   onBeforeUpdate,
-  //   watchEffect,
-} from "vue";
+import { ref, onMounted, onUpdated, computed, } from "vue";
+import { RouterLink, RouterView ,} from "vue-router";
+// import {router} from 'vue-router'
 import axios from "axios";
+import Game from "./Game.vue";
+
 export default {
   setup() {
     const URL = "https://apis.wilders.dev/wild-games/games/";
-    const data = ref("API ");
-    const characters = reactive("");
-    const cssvar = ref("");
     const dataCar = ref([]);
+    const dataCarFilter = ref([]);
 
     // const result = await axios.get(URL).data
     // characters = result;
-
     computed(() => {
       const cssvar = () => {
         return {
@@ -49,49 +36,54 @@ export default {
           "--border-color ": "yellow",
         };
       };
-      return (css.value = cssvar);
+      return (cssvar.value = cssvar);
     });
 
-    const handleClick = (e) => {
-      console.log(e);
+    
+    const navigateToDetail = ()=>{
+      console.log('detal de la card redirection')
+      //  router.push("/card-detail")
+    }
+    const filterCharacter = (id)=>{
+    return dataCarFilter .value =  dataCar.value.filter(car=>car.id!==id)
+
+    }
+    const handleClick = (event) => {
+      console.log(event.target);
+     
+    };
+    const handleChange = (event) => {
+
+      console.log(event.target);
     };
 
-    // onMounted((characters)=>{
-    //     axios.get(URL).then(res => {
-    //        characters = res.data
-    //        console.log("caracters",characters)
-    //     })
-    // })
     onUpdated(() => {
-      // return characters = JSONS.stringify(getData())
-      console.log("onUpdateed");
     });
 
     onMounted(() => {
       console.log("onMounted");
-      let d = getData();
-      console.log("d", dataCar.value);
-      return d;
+     return  getData();
     });
-
     const getData = () => {
       console.log("getDAta fct");
       axios.get(URL).then((res) => {
-        console.log(res.data);
         dataCar.value = res.data;
-        //    return  res.data
       });
     };
 
     return {
-      data,
-      characters,
+      dataCar,
+      dataCarFilter,
       getData,
       handleClick,
-      dataCar,
-      cssvar,
+      handleChange,
+      navigateToDetail, 
+      filterCharacter,
+      RouterLink, RouterView
+      
     };
   },
+   components: { Game },
 };
 </script>
 
@@ -124,6 +116,7 @@ export default {
 .card__title {
   text-align: center;
   margin-bottom: 1rem;
+  color: white;
 }
 .card__img {
   width: 398px;
@@ -143,7 +136,12 @@ export default {
 
 .card__data p {
   padding-left: 1rem;
-  paddng-right: 1rem;
+  padding-right: 1rem;
+}
+
+.card__data input {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 .card button:hover {
   cursor: pointer;
