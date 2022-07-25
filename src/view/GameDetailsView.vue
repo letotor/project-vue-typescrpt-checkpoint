@@ -1,28 +1,39 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <div class="container">
-        <router-link to="/">
-            <div class="card">
-                <h2 class="card__title">{{ dataCar.name }}</h2>
-                <img class="card__img" :src="dataCar.background_image" :alt="dataCar.name" />
-                <div class="card__data">
-                    <p>id : {{ dataCar.id }}</p>
-                    <p>slug : /{{ dataCar.slug }}</p>
-                    <p>released : {{ dataCar.released }}</p>
-                    <p>
-                        Genres:
-                        <!-- <span :key="index" v-for="(dataCar.genre, index) in genres"> {{ genre.name }}, </span> -->
-                    </p>
-                    <!-- <input v-on:input="handleChange" :value="valText" /> -->
-                    <p :value="valText">{{ valText }}</p>
-                    <!-- <button :key="id" v-on:click="handleClick">DEL</button> -->
-                </div>
-            </div>
-        </router-link>
-        <div class="card__video">
-            <video autoplay="" muted="true" controls="" loop="" :src="clip" sound=""></video>
+  <div class="container">
+    <router-link to="/">
+      <div class="card">
+        <h2 class="card__title">{{ dataCar.name }}</h2>
+        <img
+          class="card__img"
+          :src="dataCar.background_image"
+          :alt="dataCar.name"
+        />
+        <div class="card__data">
+          <p>id : {{ dataCar.id }}</p>
+          <p>slug : /{{ dataCar.slug }}</p>
+          <p>released : {{ dataCar.released }}</p>
+          <p>
+            Genres:
+            <!-- <span :key="index" v-for="(dataCar.genre, index) in genres"> {{ genre.name }}, </span> -->
+          </p>
+          <!-- <input v-on:input="handleChange" :value="valText" /> -->
+          <p :value="valText">{{ valText }}</p>
+          <!-- <button :key="id" v-on:click="handleClick">DEL</button> -->
         </div>
+      </div>
+    </router-link>
+    <div class="card__video">
+      <video
+        autoplay=""
+        muted="true"
+        controls=""
+        loop=""
+        :src="clip"
+        sound=""
+      ></video>
     </div>
+  </div>
 </template>
 
 <script>
@@ -30,16 +41,17 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 // import { } from 'vue-router'
 export default {
+  name: "GameDetailsView",
   setup() {
     const URL = "https://apis.wilders.dev/wild-games/games";
-    const idParam=3498;
+    const idParam = 3498;
 
     const valText = ref("VALtEXT");
     const dataCar = ref([]);
     const idClick = ref(0);
     const clip = ref("");
 
-// const emit = defineEmits(['un-evenement']);
+    // const emit = defineEmits(['un-evenement']);
 
     console.log(clip);
     onMounted(() => {
@@ -53,16 +65,17 @@ export default {
 
     const getData = () => {
       console.log("getDAta fct");
-        axios.get(`${URL}/${idParam}`).then((res) => {
-        console.log(res.data);
-        console.log('firest',res.data)
-           clip.value = res.data.clip.clips.full;
-        dataCar.value = res.data;
-
-      }).then((da)=>{
-        console.log('da',da)
-       
-      });
+      axios
+        .get(`${URL}/${idParam}`)
+        .then((res) => {
+          console.log(res.data);
+          console.log("firest", res.data);
+          clip.value = res.data.clip.clips.full;
+          dataCar.value = res.data;
+        })
+        .then((da) => {
+          console.log("da", da);
+        });
     };
     // computed(() => {
     //     const cssvar = () => {
@@ -94,10 +107,9 @@ export default {
       idClick,
       valText,
       clip,
-
-      // RouteParams
     };
   },
+  components: {},
 };
 </script>
 
@@ -154,18 +166,16 @@ export default {
   color: white;
 }
 
-
-.container{
-    display:flex;
-    align-content: space-around;
-    justify-content:center;
-    justify-items: center;
-    flex-flow: row wrap;
-
+.container {
+  display: flex;
+  align-content: space-around;
+  justify-content: center;
+  justify-items: center;
+  flex-flow: row wrap;
 }
 
-.card__video{
-    margin:auto;
+.card__video {
+  margin: auto;
 }
 .card__video video {
   margin: auto;

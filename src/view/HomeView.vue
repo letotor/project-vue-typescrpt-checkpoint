@@ -7,11 +7,11 @@
   </main>
 </template>
 
-
 <script>
 import GameList from "../components/GameList.vue";
 
 export default {
+  name: "HomeView",
   setup() {},
   components: { GameList },
 };

@@ -1,14 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="card">
-    <h2 class="card__title">{{name}}</h2>
+    <h2 class="card__title">{{ name }}</h2>
     <img class="card__img" :src="image" :alt="name" />
     <div class="card__data">
       <p>id : {{ id }}</p>
       <p>slug : /{{ slug }}</p>
       <p>released : {{ released }}</p>
-      <p> Genres:
-        <span :key="index" v-for="(genre,index) in genres"> {{ genre.name }}, </span>
+      <p>
+        Genres:
+        <span :key="index" v-for="(genre, index) in genres">
+          {{ genre.name }}
+        </span>
       </p>
       <input v-on:input="handleChange" :value="valText" />
       <p :value="valText">{{ valText }}</p>
@@ -19,28 +22,24 @@
 </template>
 
 <script>
-
 import { ref, reactive, onUpdated, computed } from "vue";
 
 export default {
   props: {
     id: Number,
-    name:String,
+    name: String,
     slug: String,
-    released:String,
+    released: String,
     image: String,
-    genres:Array
+    genres: Array,
   },
-  
-  setup(props,context) {
-    
-     console.log(props.genres,context);
+
+  setup(props, context) {
+    console.log(props.genres, context);
     const valText = ref("VALtEXT");
     const dataCar = ref([]);
     let idClick = reactive(0);
 
-
- 
     computed(() => {
       const cssvar = () => {
         return {
@@ -52,9 +51,9 @@ export default {
     });
 
     const handleClick = (event) => {
-      console.log(event.target,'id supp--->',props.id);
+      console.log(event.target, "id supp--->", props.id);
       idClick = props.id;
-      context.emit('sendIdCard', idClick);
+      context.emit("sendIdCard", idClick);
     };
 
     const handleChange = (event) => {
@@ -67,7 +66,6 @@ export default {
       console.log("onUpdateed game");
     });
 
-
     return {
       dataCar,
       idClick,
@@ -77,9 +75,9 @@ export default {
       props,
     };
   },
+  components: {  },
 };
 </script>
-
 
 <style scoped>
 .card {
