@@ -1,28 +1,26 @@
 <!--  ESLINT disabled -->
 <template>
-  <h1>Bienvenu sur l'API WIlder sous VUE3 composition</h1>
+  <h1>Bienvenu sur l'API Wilder sous VUE3 composition</h1>
   <!-- <pre >{{ JSON.stringify(dataCar,null,2)}}</pre> -->
   <div class="container">
     <div v-for="item in dataCarFilter" :key="item.id">
       <br />
       <!-- <NavLink @click="navigate"> -->
-        <Game
-          :id="item.id"
-          :slug="item.slug"
-          :released="item.released"
-          :image="item.background_image"
-          :genres="item.genres"
-          :name="item.name"
-          @click="navigateToDetail"
-          @send-id-card="suppCaractereFct"
-        />
+
+      <Game v-if="isActif && item.rating>4.2" :id="item.id" :slug="item.slug" :released="item.released"
+        :image="item.background_image" :rating="item.rating" :genres="item.genres" :name="item.name"
+        @click="navigateToDetail" @send-id-card="suppCaractereFct" />
+
+        <Game v-if="!isActif"  :id="item.id" :slug="item.slug" :released="item.released" :image="item.background_image"
+          :rating="item.rating" :genres="item.genres" :name="item.name" @click="navigateToDetail"
+          @send-id-card="suppCaractereFct" />
       <!-- </NavLink> -->
     </div>
   </div>
 </template>
 
 <script>
-import { ref, reactive, onMounted, onUpdated, computed } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 // import Navlink from 'vue-router';
 
 // import {router} from 'vue-router'
@@ -30,8 +28,12 @@ import axios from "axios";
 import Game from "./Game.vue";
 
 export default {
+  props: {
+    isActif: Boolean,
+  },
 
-  setup() {
+  setup(props) {
+    console.log("----------->", props.isActif);
     const URL = "https://apis.wilders.dev/wild-games/games/";
     let dataCar = reactive([
       {
@@ -58,8 +60,6 @@ export default {
     ]);
     const idLink = ref(0);
 
-    // const result = await axios.get(URL).data
-    // characters = result;
     computed(() => {
       const cssvar = () => {
         return {
@@ -70,18 +70,11 @@ export default {
       return (cssvar.value = cssvar);
     });
 
-
-   
-
-
     const suppCaractereFct = (id) => {
       idLink.value = id;
-      console.log("receive id", idLink.value);
-     
-
-      let idx = dataCarFilter.findIndex(elt => elt.id == id);
-      console.log(idx)
-      dataCarFilter.splice(idx, 1) 
+      let idx = dataCarFilter.findIndex((elt) => elt.id == id);
+      console.log("receive id", idLink.value, idx);
+      dataCarFilter.splice(idx, 1);
     };
 
     const handleClick = (event) => {
@@ -93,12 +86,11 @@ export default {
       console.log(event.target);
     };
 
-    onUpdated(() => {});
-
     onMounted(() => {
       console.log("onMounted");
       return getData();
     });
+
     const getData = () => {
       console.log("getDAta fct");
       axios.get(URL).then((res) => {
@@ -109,14 +101,16 @@ export default {
       });
     };
 
+    // console.log('--------------->',dataCarFilter)
     return {
+      props,
       dataCar,
       dataCarFilter,
       idLink,
       getData,
       handleClick,
       handleChange,
-     
+
       suppCaractereFct,
     };
   },

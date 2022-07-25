@@ -7,11 +7,17 @@
       <p>id : {{ id }}</p>
       <p>slug : /{{ slug }}</p>
       <p>released : {{ released }}</p>
+      <p>rating : {{ rating }}</p>
       <p>
         Genres:
         <span :key="index" v-for="(genre, index) in genres">
-          {{ genre.name }}
+          {{ genre.name}}
+          <!-- {{'test ->  '+JSON.stringify(genre.name.split(',').join(''),2,null)}} -->
+          <span> , </span>
+          <!-- {{ JSON.stringify(genres.split(','),2,null)}} -->
         </span>
+
+
       </p>
       <input v-on:input="handleChange" :value="valText" />
       <p :value="valText">{{ valText }}</p>
@@ -30,15 +36,16 @@ export default {
     name: String,
     slug: String,
     released: String,
+    rating: Number,
     image: String,
     genres: Array,
   },
 
   setup(props, context) {
     console.log(props.genres, context);
-    const valText = ref("VALtEXT");
-    const dataCar = ref([]);
-    let idClick = reactive(0);
+    const valText = ref("");
+    const dataCar = reactive([]);
+    let idClick = ref(0);
 
     computed(() => {
       const cssvar = () => {
@@ -52,8 +59,8 @@ export default {
 
     const handleClick = (event) => {
       console.log(event.target, "id supp--->", props.id);
-      idClick = props.id;
-      context.emit("sendIdCard", idClick);
+      idClick.value = props.id;
+      context.emit("sendIdCard", idClick.value);
     };
 
     const handleChange = (event) => {
