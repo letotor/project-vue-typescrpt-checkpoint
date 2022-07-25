@@ -4,9 +4,8 @@
   <!-- <pre >{{ JSON.stringify(dataCar,null,2)}}</pre> -->
   <div class="container">
     <div v-for="item in dataCarFilter" :key="item.id">
-   
       <br />
-      <NavLink @click="navigate">
+      <!-- <NavLink @click="navigate"> -->
         <Game
           :id="item.id"
           :slug="item.slug"
@@ -16,42 +15,47 @@
           :name="item.name"
           @click="navigateToDetail"
           @send-id-card="suppCaractereFct"
-          
         />
-      </NavLink>
+      <!-- </NavLink> -->
     </div>
   </div>
 </template>
 
 <script>
 import { ref, reactive, onMounted, onUpdated, computed } from "vue";
+// import Navlink from 'vue-router';
 
 // import {router} from 'vue-router'
 import axios from "axios";
 import Game from "./Game.vue";
 
 export default {
+
   setup() {
     const URL = "https://apis.wilders.dev/wild-games/games/";
-    let dataCar = reactive([{
-      id:0,
-      slug:"mon-slug",
-      background_image:"https://place-hold.it/300x500/666/fff.png/000",
-      genres:[{name:'Action'},{name:'public'}],
-      name:"Mon titre",
-      rating:3.5,
-      released:"2022"
-    }]);
+    let dataCar = reactive([
+      {
+        id: 0,
+        slug: "mon-slug",
+        background_image: "https://place-hold.it/300x500/666/fff.png/000",
+        genres: [{ name: "Action" }, { name: "public" }],
+        name: "Mon titre",
+        rating: 3.5,
+        released: "2022",
+      },
+    ]);
 
-    const dataCarFilter = reactive([{
-      id: 0,
-      slug: "mon-slug",
-      background_image: "https://place-hold.it/300x500/666/fff.png/000",
-      genres: [{ name: 'Action' }, { name: 'public' }],
-      name: "Mon titre",
-      rating: 3.5,
-      released: "2022"
-    }]);
+    let dataCarFilter = reactive([
+      {
+        id: 0,
+        slug: "mon-slug",
+        background_image: "https://place-hold.it/300x500/666/fff.png/000",
+        genres: [{ name: "Action" }, { name: "public" }],
+        name: "Mon titre",
+        rating: 3.5,
+        released: "2022",
+      },
+    ]);
     const idLink = ref(0);
 
     // const result = await axios.get(URL).data
@@ -66,22 +70,18 @@ export default {
       return (cssvar.value = cssvar);
     });
 
+
+   
+
+
     const suppCaractereFct = (id) => {
       idLink.value = id;
       console.log("receive id", idLink.value);
-      filterCharacter(idLink);
-      // console.log(dataCarFilter);
-    };
+     
 
-    const navigate = () => {
-      // console.log("detail de la card USENAVIGATE");
-    };
-
-    const filterCharacter = (id) => {
-      // console.log("filterCharacter", dataCar,id);
-
-      dataCarFilter.splice(id,1)
-      console.log('dataCarFilter after filter',id, dataCarFilter) 
+      let idx = dataCarFilter.findIndex(elt => elt.id == id);
+      console.log(idx)
+      dataCarFilter.splice(idx, 1) 
     };
 
     const handleClick = (event) => {
@@ -102,13 +102,11 @@ export default {
     const getData = () => {
       console.log("getDAta fct");
       axios.get(URL).then((res) => {
-        console.log(dataCar[1])
-        res.data.map((elt,index)=>dataCar[index]=elt)
-        res.data.map((elt, index) => dataCarFilter[index] = elt)
+        console.log(dataCar[1]);
+        res.data.map((elt, index) => (dataCar[index] = elt));
+        res.data.map((elt, index) => (dataCarFilter[index] = elt));
         return dataCar;
-      }
-       
-      );
+      });
     };
 
     return {
@@ -118,10 +116,8 @@ export default {
       getData,
       handleClick,
       handleChange,
-      navigate,
-      filterCharacter,
+     
       suppCaractereFct,
-      
     };
   },
   components: { Game },

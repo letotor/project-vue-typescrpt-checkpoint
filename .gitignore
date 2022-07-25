@@ -30,3 +30,6 @@ coverage
 
 .vscode
 yarn.lock
+
+# Local Netlify folder
+.netlify
