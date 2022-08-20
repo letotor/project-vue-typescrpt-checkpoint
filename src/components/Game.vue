@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { ref, reactive, onUpdated, computed } from "vue";
+import { ref, reactive, onUpdated, computed, toRefs } from "vue";
 
 export default {
   props: {
@@ -74,7 +74,7 @@ export default {
     });
 
     return {
-      dataCar,
+      ...toRefs( dataCar),
       idClick,
       valText,
       handleClick,

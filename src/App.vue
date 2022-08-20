@@ -1,11 +1,5 @@
-<script setup>
+<script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-
-// const handleClick = (e)=>{
-// console.log('test')
-
-// }
-
 </script>
 
 <template>
@@ -22,8 +16,8 @@ import { RouterLink, RouterView } from "vue-router";
   <RouterView />
 </template>
 
-<style scoped>
-nav{
-  font-size:2rem;
+<style scoped lag="scss">
+nav {
+  font-size: 2rem;
 }
 </style>

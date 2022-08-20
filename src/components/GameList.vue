@@ -7,13 +7,31 @@
       <br />
       <!-- <NavLink @click="navigate"> -->
 
-      <Game v-if="isActif && item.rating>4.2" :id="item.id" :slug="item.slug" :released="item.released"
-        :image="item.background_image" :rating="item.rating" :genres="item.genres" :name="item.name"
-        @click="navigateToDetail" @send-id-card="suppCaractereFct" />
+      <Game
+        v-if="isActif && item.rating > 4.2"
+        :id="item.id"
+        :slug="item.slug"
+        :released="item.released"
+        :image="item.background_image"
+        :rating="item.rating"
+        :genres="item.genres"
+        :name="item.name"
+        @click="navigateToDetail"
+        @send-id-card="suppCaractereFct"
+      />
 
-        <Game v-if="!isActif"  :id="item.id" :slug="item.slug" :released="item.released" :image="item.background_image"
-          :rating="item.rating" :genres="item.genres" :name="item.name" @click="navigateToDetail"
-          @send-id-card="suppCaractereFct" />
+      <Game
+        v-if="!isActif"
+        :id="item.id"
+        :slug="item.slug"
+        :released="item.released"
+        :image="item.background_image"
+        :rating="item.rating"
+        :genres="item.genres"
+        :name="item.name"
+        @click="navigateToDetail"
+        @send-id-card="suppCaractereFct"
+      />
       <!-- </NavLink> -->
     </div>
   </div>
