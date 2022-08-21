@@ -2,18 +2,16 @@
   <h1>Bienvenu sur l'API Wilder sous VUE3 composition</h1>
   <!-- <pre >{{ JSON.stringify(dataCar,null,2)}}</pre> -->
   <div class="container">
-    <div v-for="item in dataGames" :key="item.id">
+    <div v-for="item in state.gameCustom" :key="item.id">
       <br />
       <!-- <router-link to="card-detail/3346"> -->
-        {{ item.rating }}
-        <Game
-          v-if="isActif && item.rating > 4.2"
-          :game="item"
-          @remove-game="removeGame"
-        />
-        <Game v-if="!isActif" 
+      {{ item.rating }}
+      <Game
+        v-if="isActif && item.rating > 4.2"
         :game="item"
-          @remove-game="removeGame"/>
+        @remove-game="removeGame"
+      />
+      <Game v-if="!isActif" :game="item" @remove-game="removeGame" />
       <!-- </router-link> -->
     </div>
   </div>
@@ -49,15 +47,15 @@ const dataGames = reactive<GameInterface[]>([]);
 const state = reactive<stateInterface>({
   gamesList: [],
   gameCustom: [
-    {
-      id: 0,
-      slug: "/test",
-      name: "mon titre",
-      released: "2020-01-01",
-      rating:0,
-      background_image:
-        "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-    },
+    // {
+    //   id: 0,
+    //   slug: "/test",
+    //   name: "mon titre",
+    //   released: "2020-01-01",
+    //   rating: 0,
+    //   background_image:
+    //     "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+    // },
   ],
   idSelected: 0,
 });
@@ -69,11 +67,9 @@ const state = reactive<stateInterface>({
 //   dataCarFilter.splice(idx, 1);
 // };
 const removeGame = (gameId: number): void => {
-
-    console.log("receive id", gameId);
-  // state.cart = state.cart.filter((product) => product.id !== productId);
+  console.log("receive id", gameId);
+  state.gameCustom = state.gameCustom.filter((gameDelete) => gameDelete.id !== gameId);
 };
-
 
 const navigateToDetail = () => {
   // console.log(event.target);
