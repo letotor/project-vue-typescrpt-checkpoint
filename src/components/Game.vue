@@ -1,92 +1,48 @@
-<!-- eslint-disable vue/multi-word-component-names -->
+
 <template>
   <div class="card">
-    <h2 class="card__title">{{ name }}</h2>
-    <img class="card__img" :src="image" :alt="name" />
+    <h2 class="card__title">{{ game.name }}</h2>
+    <img class="card__img" :src="game.background_image" :alt="game.name" />
     <div class="card__data">
-      <p>id : {{ id }}</p>
-      <p>slug : /{{ slug }}</p>
-      <p>released : {{ released }}</p>
-      <p>rating : {{ rating }}</p>
+      <p>id : {{ game.id }}</p>
+      <p>slug : /{{ game.slug }}</p>
+      <p>released : {{ game.released }}</p>
+      <p>rating : {{ game.rating }}</p>
       <p>
         Genres:
-        <span :key="index" v-for="(genre, index) in genres">
-          {{ genre.name}}
-          <!-- {{'test ->  '+JSON.stringify(genre.name.split(',').join(''),2,null)}} -->
+        <span :key="index" v-for="(genre, index) in game.genres">
+          {{ genre.name }}
           <span> , </span>
-          <!-- {{ JSON.stringify(genres.split(','),2,null)}} -->
         </span>
-
-
       </p>
-      <input v-on:input="handleChange" :value="valText" />
-      <p :value="valText">{{ valText }}</p>
-      <!-- <button @click="emitCustomEvent">Cliquer</button> -->
-      <button :key="id" v-on:click="handleClick">DEL</button>
+      <!--<button @click="emitCustomEvent">Cliquer</button> -->
+      <button :key="game.id" @click="deleteGameById(game.id)">DEL</button>
     </div>
   </div>
 </template>
 
-<script>
-import { ref, reactive, onUpdated, computed, toRefs } from "vue";
+<script setup lang="ts">
+import type { GameInterface } from "../interfaces/index";
+import { ref } from "vue";
 
-export default {
-  props: {
-    id: Number,
-    name: String,
-    slug: String,
-    released: String,
-    rating: Number,
-    image: String,
-    genres: Array,
-  },
 
-  setup(props, context) {
-    console.log(props.genres, context);
-    const valText = ref("");
-    const dataCar = reactive([]);
-    let idClick = ref(0);
+defineProps<{
+  game: GameInterface;
+}>();
 
-    computed(() => {
-      const cssvar = () => {
-        return {
-          "--primary-color": "red",
-          "--border-color ": "yellow",
-        };
-      };
-      return (cssvar.value = cssvar);
-    });
+const idClick = ref(0);
+const emitGameDelete= defineEmits<{
+   (e: 'removeGame', gameId: number): void;
+ }>();
 
-    const handleClick = (event) => {
-      console.log(event.target, "id supp--->", props.id);
-      idClick.value = props.id;
-      context.emit("sendIdCard", idClick.value);
-    };
-
-    const handleChange = (event) => {
-      // console.log(event.target.value);
-      console.log(event.target);
-      return (valText.value = event.target.value);
-    };
-
-    onUpdated(() => {
-      console.log("onUpdateed game");
-    });
-
-    return {
-      ...toRefs( dataCar),
-      idClick,
-      valText,
-      handleClick,
-      handleChange,
-      props,
-    };
-  },
-  components: {  },
+const deleteGameById = (id: number) => {
+  idClick.value = id;
+  console.log("idClick", id);
+  emitGameDelete('removeGame', id);
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .card {
   color: var(--primary-color);
   border-radius: 7px;
