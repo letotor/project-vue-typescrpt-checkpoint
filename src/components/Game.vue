@@ -1,4 +1,3 @@
-
 <template>
   <div class="card">
     <h2 class="card__title">{{ game.name }}</h2>
@@ -15,7 +14,6 @@
           <span> , </span>
         </span>
       </p>
-      <!--<button @click="emitCustomEvent">Cliquer</button> -->
       <button :key="game.id" @click="deleteGameById(game.id)">DEL</button>
     </div>
   </div>
@@ -25,20 +23,19 @@
 import type { GameInterface } from "../interfaces/index";
 import { ref } from "vue";
 
-
 defineProps<{
   game: GameInterface;
 }>();
 
 const idClick = ref(0);
-const emitGameDelete= defineEmits<{
-   (e: 'removeGame', gameId: number): void;
- }>();
+const emitGameDelete = defineEmits<{
+  (e: "removeGame", gameId: number): void;
+}>();
 
 const deleteGameById = (id: number) => {
   idClick.value = id;
   console.log("idClick", id);
-  emitGameDelete('removeGame', id);
+  emitGameDelete("removeGame", id);
 };
 </script>
 

@@ -4,15 +4,14 @@
   <div class="container">
     <div v-for="item in state.gameCustom" :key="item.id">
       <br />
-      <!-- <router-link to="card-detail/3346"> -->
-      {{ item.rating }}
+      <!-- <router-link to="card-detail"> -->
       <Game
         v-if="isActif && item.rating > 4.2"
         :game="item"
         @remove-game="removeGame"
       />
       <Game v-if="!isActif" :game="item" @remove-game="removeGame" />
-      <!-- </router-link> -->
+      <!-- </router-link>  -->
     </div>
   </div>
 </template>
@@ -30,12 +29,6 @@ import Game from "../components/Game.vue";
 defineProps<{
   isActif?: boolean;
 }>();
-
-// const emit = defineEmits<{
-//   (e: 'removeGame', gameId: number): void;
-// }>();
-
-// console.warn("----------->", isActif);
 const URL = "https://apis.wilders.dev/wild-games/games/";
 
 type stateInterface = {
@@ -46,17 +39,7 @@ type stateInterface = {
 const dataGames = reactive<GameInterface[]>([]);
 const state = reactive<stateInterface>({
   gamesList: [],
-  gameCustom: [
-    // {
-    //   id: 0,
-    //   slug: "/test",
-    //   name: "mon titre",
-    //   released: "2020-01-01",
-    //   rating: 0,
-    //   background_image:
-    //     "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-    // },
-  ],
+  gameCustom: [],
   idSelected: 0,
 });
 
@@ -68,12 +51,12 @@ const state = reactive<stateInterface>({
 // };
 const removeGame = (gameId: number): void => {
   console.log("receive id", gameId);
-  state.gameCustom = state.gameCustom.filter((gameDelete) => gameDelete.id !== gameId);
+  state.gameCustom = state.gameCustom.filter(
+    (gameDelete) => gameDelete.id !== gameId
+  );
 };
 
 const navigateToDetail = () => {
-  // console.log(event.target);
-  console.log("hadnelclik ------");
   return state.idSelected == 10;
 };
 
